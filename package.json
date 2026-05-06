@@ -1,0 +1,38 @@
+{
+  "name": "podwave-tdd-sequelize",
+  "version": "1.0.0",
+  "description": "Setup inicial do PodWave com Express, EJS, Vitest e Sequelize.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "db:test": "node src/config/testConnection.js"
+  },
+  "dependencies": {
+    "bcryptjs": "latest",
+    "connect-flash": "latest",
+    "cookie-parser": "latest",
+    "dotenv": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-ejs-layouts": "latest",
+    "express-session": "latest",
+    "http-errors": "latest",
+    "morgan": "latest",
+    "multer": "latest",
+    "mysql2": "latest",
+    "sequelize": "latest"
+  },
+  "devDependencies": {
+    "@vitest/ui": "latest",
+    "happy-dom": "latest",
+    "nodemon": "latest",
+    "supertest": "latest",
+    "vitest": "latest"
+  }
+}
