@@ -1,48 +1,155 @@
-# PodWave – Streaming de Podcasts
+# 🎧 PodWave – Plataforma de Streaming de Podcasts
 
-Setup inicial da aplicação **PodWave** usando Node.js, Express, EJS, Vitest e Sequelize com MySQL.
+Projeto desenvolvido para a disciplina de Testes de Software utilizando a metodologia **TDD (Test-Driven Development)** com Node.js, Express, Sequelize, Vitest, Supertest e MySQL.
 
-## Funcionalidades previstas
+---
 
-### Usuários
-- Cadastro e autenticação
-- Exploração de podcasts por categorias
-- Reprodução contínua de episódios
-- Favoritar episódios e marcar progresso
-- Avaliação e comentários
+# Objetivo
 
-### Administradores
-- Dashboard com estatísticas
-- Cadastro e gerenciamento de podcasts e episódios
-- Controle de usuários e permissões
+O PodWave é uma plataforma de streaming de podcasts onde usuários podem explorar conteúdos, acompanhar seu progresso de reprodução, favoritar episódios e realizar avaliações.
 
-## Tecnologias
+O projeto foi desenvolvido seguindo o ciclo:
+
+1. Red
+2. Green
+3. Refactor
+
+conforme a metodologia TDD apresentada em aula.
+
+---
+
+# Funcionalidades
+
+## Usuários
+
+- Cadastro de usuários
+- Login e logout
+- Controle de sessão
+- Exploração de podcasts
+- Favoritar episódios
+- Controle de progresso
+- Avaliações e comentários
+
+## Administradores
+
+- Dashboard administrativo
+- Gerenciamento de podcasts
+- Gerenciamento de episódios
+- Controle de usuários
+- Controle de permissões
+
+---
+
+# Tecnologias Utilizadas
 
 - Node.js
-- Express
+- Express.js
 - EJS
 - Sequelize
 - MySQL
 - Vitest
 - Supertest
+- Axios
+- Axios Mock Adapter
+- bcryptjs
 - Nodemon
 
-## Como rodar
+---
+
+# Estrutura do Projeto
+
+```txt
+src/
+│
+├── config/
+├── middlewares/
+├── models/
+├── modules/
+│   ├── auth/
+│   ├── user/
+│   ├── podcast/
+│   ├── episode/
+│   ├── category/
+│   ├── favorite/
+│   ├── progress/
+│   ├── review/
+│   └── admin/
+│
+├── routes/
+├── views/
+├── public/
+│
+├── app.js
+└── server.js
+```
+
+---
+
+# Configuração
+
+Instale as dependências:
 
 ```bash
 npm install
-copy .env.example .env
-npm test
-npm run dev
 ```
 
-No Linux/Mac, use:
+Crie o arquivo `.env`:
+
+```bash
+copy .env.example .env
+```
+
+Linux/Mac:
 
 ```bash
 cp .env.example .env
 ```
 
-Acesse:
+---
+
+# Exemplo de .env
+
+```env
+PORT=3000
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=podwave_db_tdd
+DB_USER=root
+DB_PASSWORD=sua_senha
+
+SESSION_SECRET=podwave-secret
+```
+
+⚠️ Nunca envie sua senha real do banco para o GitHub.
+
+---
+
+# Banco de Dados
+
+Criar o banco:
+
+```sql
+CREATE DATABASE podwave_db_tdd;
+```
+
+Testar conexão:
+
+```bash
+npm run db:test
+```
+
+Executar aplicação:
+
+```bash
+npm run dev
+```
+
+---
+
+# URLs
+
+Aplicação:
 
 ```txt
 http://localhost:3000
@@ -54,27 +161,9 @@ Health Check:
 http://localhost:3000/health
 ```
 
-## Banco de dados
+---
 
-Crie o banco no MySQL/MariaDB antes de rodar o servidor:
-
-```sql
-CREATE DATABASE podwave_db_tdd;
-```
-
-Depois teste a conexão:
-
-```bash
-npm run db:test
-```
-
-Ao executar `npm run dev`, o Sequelize sincroniza os models com o banco usando:
-
-```js
-sequelize.sync({ alter: true })
-```
-
-## Models criados
+# Models
 
 - User
 - Podcast
@@ -83,30 +172,156 @@ sequelize.sync({ alter: true })
 - Progress
 - Review
 
-## Comandos GitHub
+---
 
-```bash
-git init
-git add .
-git commit -m "Setup inicial do PodWave com Sequelize e TDD"
-git branch -M main
-git remote add origin URL_DO_REPOSITORIO
-git push -u origin main
+# Testes Automatizados
+
+## Testes Unitários
+
+Implementados para as camadas Service:
+
+- User Service
+- Auth Service
+- Podcast Service
+- Episode Service
+- Category Service
+- Favorite Service
+- Progress Service
+- Review Service
+- Admin Service
+- Health Service
+
+## Testes com Mock
+
+Utilizando:
+
+```js
+vi.fn()
 ```
 
+para simular dependências e isolar comportamentos.
 
-## Módulos e regras de negócio implementados
+## Testes de Integração
 
-A aplicação foi organizada em módulos, seguindo a proposta de TDD da Aula 01:
+Implementados com:
 
-- `auth`: login, logout, sessão e acesso administrativo.
-- `user`: cadastro, validação de usuário e proteção de dados sensíveis.
-- `podcast`: cadastro e gerenciamento de podcasts.
-- `episode`: cadastro e reprodução sequencial de episódios.
-- `category`: organização dos podcasts por categoria.
-- `favorite`: regra para favoritar episódios sem duplicidade.
-- `progress`: progresso de audição e marcação de episódio concluído.
-- `review`: comentários, avaliações e média de notas.
-- `admin`: dashboard administrativo com estatísticas.
+```js
+Supertest
+```
 
-Cada módulo possui pelo menos `service`, `controller`, `routes` e/ou testes automatizados em `__tests__`.
+Validando:
+
+- GET /health
+- GET /register
+- POST /register
+- GET /login
+- POST /login
+- POST /logout
+
+Verificando:
+
+- Status HTTP
+- Redirecionamentos
+- Respostas JSON
+- Fluxos de sucesso e falha
+
+## Testes de API Externa
+
+Implementados com:
+
+```js
+Axios
+Axios Mock Adapter
+```
+
+Simulando integração com API externa de podcasts.
+
+---
+
+# Cobertura de Código
+
+O projeto possui cobertura automatizada utilizando:
+
+```bash
+npm run test:coverage
+```
+
+Atendendo aos requisitos mínimos definidos na avaliação.
+
+---
+
+# Requisitos da Avaliação Atendidos
+
+## Nota 6
+
+✅ Projeto estruturado em módulos
+
+✅ Aplicação do ciclo TDD
+
+✅ Mais de 10 testes unitários
+
+✅ Uso de mocks
+
+✅ RELATORIO.md
+
+---
+
+## Nota 7
+
+✅ Apresentação PowerPoint/PDF
+
+✅ Mais de 15 testes unitários
+
+✅ Cobertura de código configurada
+
+✅ Cobertura superior ao mínimo exigido
+
+---
+
+## Nota 8
+
+✅ Testes de integração com Supertest
+
+✅ Mais de 5 testes de integração
+
+✅ Controller e rotas testadas
+
+✅ Cenários de sucesso e falha
+
+✅ Material preparado para vídeo explicativo
+
+---
+
+## Nota 9
+
+✅ Mais de 10 testes de integração
+
+✅ Testes de API utilizando Axios Mock Adapter
+
+✅ Simulação de API externa
+
+✅ Refatorações documentadas no RELATORIO.md
+
+---
+
+# Executando os Testes
+
+Rodar testes:
+
+```bash
+npm test
+```
+
+Rodar cobertura:
+
+```bash
+npm run test:coverage
+```
+
+---
+
+# Autor
+
+Cristiano Castanheira Silva
+
+Engenharia de Software
