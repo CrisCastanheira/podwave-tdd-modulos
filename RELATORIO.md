@@ -114,10 +114,29 @@ it('deve permitir atualização pelo próprio usuário ou admin', () => {
 ```
 
 ---
+## 4. Lições Aprendidas
 
-## 5. Uso de Mocks
+Durante o desenvolvimento do projeto PodWave utilizando Test-Driven Development (TDD), foi possível compreender na prática a importância dos testes automatizados para garantir a qualidade do software.
 
-O projeto utiliza mocks através da biblioteca Vitest para isolar dependências externas durante os testes.
+Inicialmente, escrever os testes antes da implementação parecia aumentar o tempo de desenvolvimento. Entretanto, conforme o projeto evoluiu, os testes passaram a servir como uma rede de segurança para realizar alterações e refatorações com confiança.
+
+Entre os principais aprendizados estão:
+
+- Melhor compreensão dos requisitos antes da implementação.
+- Desenvolvimento orientado por comportamento esperado.
+- Redução de erros durante alterações no código.
+- Maior organização da arquitetura em camadas.
+- Facilidade para validar regras de negócio automaticamente.
+- Maior confiança durante refatorações.
+
+Além disso, a utilização de mocks, testes de integração com Supertest e testes de API com Axios Mock Adapter demonstrou como isolar dependências externas e validar diferentes cenários sem depender de banco de dados ou serviços reais.
+
+## 5. Uso de Mocks & Utilização da Cobertura de Código
+
+O projeto utiliza mocks através da biblioteca Vitest para isolar dependências externas durante os testes.Durante o desenvolvimento foram utilizados relatórios de cobertura de código gerados pelo Vitest através do comando:
+
+```bash
+npm run test:coverage
 
 Arquivo:
 
@@ -264,3 +283,105 @@ Criação da função sanitizeUser().
 
 Benefício:
 Proteção contra exposição de password_hash.
+
+## Diagrama de Arquitetura
+
+```mermaid
+flowchart TD
+
+    A[Cliente / Navegador]
+
+    A --> B[Routes]
+    B --> C[Controllers]
+    C --> D[Services]
+    D --> E[Models Sequelize]
+    E --> F[(MySQL)]
+
+    D --> G[API Externa de Podcasts]
+    G --> H[Axios]
+
+    subgraph Testes Unitários
+        T1[user.service.test.js]
+        T2[auth.service.test.js]
+        T3[podcast.service.test.js]
+        T4[category.service.test.js]
+        T5[episode.service.test.js]
+        T6[favorite.service.test.js]
+        T7[progress.service.test.js]
+        T8[review.service.test.js]
+        T9[admin.service.test.js]
+    end
+
+    T1 --> D
+    T2 --> D
+    T3 --> D
+    T4 --> D
+    T5 --> D
+    T6 --> D
+    T7 --> D
+    T8 --> D
+    T9 --> D
+
+    subgraph Testes de Integração
+        I1[user.controller.test.js]
+        I2[auth.controller.test.js]
+        I3[health.controller.test.js]
+    end
+
+    I1 --> C
+    I2 --> C
+    I3 --> C
+
+    subgraph Testes de API
+        A1[podcastApi.service.test.js]
+    end
+
+    A1 --> G
+```
+### Descrição da Arquitetura
+
+O projeto PodWave foi desenvolvido utilizando uma arquitetura em camadas para facilitar manutenção, testes e evolução do sistema.
+
+- **Routes:** recebem as requisições HTTP.
+- **Controllers:** controlam o fluxo da aplicação e retornam respostas ao usuário.
+- **Services:** concentram as regras de negócio.
+- **Models (Sequelize):** fazem a comunicação com o banco de dados MySQL.
+- **API Externa:** simulada através do Axios e Axios Mock Adapter para testes de integração com serviços externos.
+
+### Estratégia de Testes
+
+O projeto utiliza três níveis de testes:
+
+#### Testes Unitários
+Validam funções isoladas da camada Service utilizando mocks quando necessário.
+
+Arquivos:
+- user.service.test.js
+- auth.service.test.js
+- podcast.service.test.js
+- category.service.test.js
+- episode.service.test.js
+- favorite.service.test.js
+- progress.service.test.js
+- review.service.test.js
+- admin.service.test.js
+
+#### Testes de Integração
+Validam o comportamento HTTP das rotas e controllers utilizando Supertest.
+
+Arquivos:
+- user.controller.test.js
+- auth.controller.test.js
+- health.controller.test.js
+
+#### Testes de API
+Validam integrações externas simuladas utilizando Axios Mock Adapter.
+
+Arquivo:
+- podcastApi.service.test.js
+
+Atualmente o projeto possui:
+- 43 testes unitários e de integração
+- 5 testes de API
+- Cobertura superior a 80% na funcionalidade principal
+- Aplicação completa do ciclo TDD (Red → Green → Refactor)
